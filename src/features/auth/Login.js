@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
+
 import usePersist from "../../hooks/usePersist";
 
 const Login = () => {
@@ -91,10 +92,10 @@ const Login = () => {
           />
           <button className="form__submit-button">Sign In</button>
 
-          <label htmlFor="persist" className="'form__persist">
+          <label htmlFor="persist" className="form__persist">
             <input
               type="checkbox"
-              classname="form__checkbox"
+              className="form__checkbox"
               id="persist"
               onChange={handleToggle}
               checked={persist}

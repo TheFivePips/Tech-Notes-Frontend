@@ -1,13 +1,12 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { useDeleteNoteMutation, useUpdateNoteMutation } from "./notesApiSlice";
-import useAuth from '../../hooks/useAuth'
+import useAuth from "../../hooks/useAuth";
 
 const EditNoteForm = ({ note, users }) => {
-
-  const { isManager, isAdmin } = useAuth()
+  const { isManager, isAdmin } = useAuth();
 
   const [updateNote, { isLoading, isSuccess, isError, error }] =
     useUpdateNoteMutation();
@@ -19,27 +18,26 @@ const EditNoteForm = ({ note, users }) => {
 
   const navigate = useNavigate();
 
-  const [userId, setUserId] = useState(note.user);
   const [title, setTitle] = useState(note.title);
   const [text, setText] = useState(note.text);
   const [completed, setCompleted] = useState(note.completed);
+  const [userId, setUserId] = useState(note.user);
 
   useEffect(() => {
-    console.log(isSuccess);
     if (isSuccess || isDelSuccess) {
-      setUserId("");
       setTitle("");
       setText("");
+      setUserId("");
       navigate("/dash/notes");
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
-  const onUserIdChanged = (e) => setUserId(e.target.value);
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onTextChanged = (e) => setText(e.target.value);
   const onCompletedChanged = (e) => setCompleted((prev) => !prev);
+  const onUserIdChanged = (e) => setUserId(e.target.value);
 
-  const canSave = [userId, text, title].every(Boolean) && !isLoading;
+  const canSave = [title, text, userId].every(Boolean) && !isLoading;
 
   const onSaveNoteClicked = async (e) => {
     if (canSave) {
@@ -83,14 +81,19 @@ const EditNoteForm = ({ note, users }) => {
 
   const errContent = (error?.data?.message || delerror?.data?.message) ?? "";
 
-  let deleteButton = null
-  if(isAdmin || isManager) {
+  let deleteButton = null;
+  if (isManager || isAdmin) {
     deleteButton = (
-      <button className="icon-button" title="Delete" onClick={onDeleteNoteClicked}>
+      <button
+        className="icon-button"
+        title="Delete"
+        onClick={onDeleteNoteClicked}
+      >
         <FontAwesomeIcon icon={faTrashCan} />
       </button>
-    )
+    );
   }
+
   const content = (
     <>
       <p className={errClass}>{errContent}</p>

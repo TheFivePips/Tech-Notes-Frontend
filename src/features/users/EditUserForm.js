@@ -35,7 +35,6 @@ const EditUserForm = ({ user }) => {
   }, [password]);
 
   useEffect(() => {
-    console.log(isSuccess);
     if (isSuccess || isDelSuccess) {
       setUsername("");
       setPassword("");
@@ -72,7 +71,6 @@ const EditUserForm = ({ user }) => {
   const options = Object.values(ROLES).map((role) => {
     return (
       <option key={role} value={role}>
-        
         {role}
       </option>
     );
